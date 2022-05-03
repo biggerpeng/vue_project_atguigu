@@ -42,10 +42,12 @@
 </template>
 
 <script>
-  export default {}
+  export default {
+    name: 'Header'
+  }
 </script>
 
-<style lang="less">
+<style scoped lang="less">
   .header {
     & > .top {
       background-color: #eaeaea;
