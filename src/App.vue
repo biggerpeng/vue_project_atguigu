@@ -2,7 +2,7 @@
   <div>
     <Header></Header>
     <router-view></router-view>
-    <Footer></Footer>
+    <Footer v-show="$route.meta.show"></Footer>
   </div>
 </template>
 
@@ -11,17 +11,20 @@
   import Footer from './components/Footer'
   export default {
     name: 'App',
+    /* data() {
+            return {
+              isFooterShow: this.$route.path === '/home' || this.$route.path === '/search' //为什么跳转路由该属性不会更改
+            }
+          }, */
+    /* computed: {
+          isFooterShow: this.$route.path === '/home' || this.$route.path === '/search' //这里$route为什么是undefine
+        }, */
     components: {
       Header,
       Footer
-    },
-    mounted() {
-      this.$router.replace({
-        // name: 'Home'//这里的name是命名路由的name，不是组件name
-        path: '/home'
-      })
     }
   }
+  // 注意代码是否多了一些多余的东西，例如``
 </script>
 
 <style>
