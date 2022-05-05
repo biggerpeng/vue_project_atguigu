@@ -63,10 +63,7 @@
         this.$router.push({
           name: 'search',
           params: {
-            keyword: this.keyword
-          },
-          query: {
-            k: this.keyword.toUpperCase()
+            keyword: this.keyword || undefine
           }
         })
       }

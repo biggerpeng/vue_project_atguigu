@@ -9,6 +9,9 @@ Vue.component(TypeNav.name, TypeNav)
 // 导入store
 import store from '@/store'
 
+// 执行mock
+import '@/mock/mockServe'
+
 Vue.config.productionTip = false
 
 new Vue({
