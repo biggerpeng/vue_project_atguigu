@@ -1,7 +1,7 @@
 <template>
   <!-- 商品分类导航 -->
   <div class="type-nav">
-    <div class="container">
+    <div class="container" @mouseleave="leave">
       <h2 class="all">全部商品分类</h2>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -14,20 +14,41 @@
         <a href="###">秒杀</a>
       </nav>
       <div class="sort">
-        <div class="all-sort-list2">
-          <div class="item bo" v-for="c1 in categoryList" :key="c1.categoryId">
+        <div class="all-sort-list2" @click="goSearch">
+          <!-- 一级分类 -->
+          <div
+            class="item bo"
+            v-for="(c1, index) in categoryList"
+            :key="c1.categoryId"
+            @mouseenter="changeIndex(index)"
+            :class="{ current: currentIndex === index }"
+          >
             <h3>
-              <a href="">{{ c1.categoryName }}</a>
+              <a :data-categoryname="c1.categoryName" :data-category1id="c1.categoryId">{{
+                c1.categoryName
+              }}</a>
+              <!-- <router-link to="/search">{{ c1.categoryName }}</router-link> -->
             </h3>
-            <div class="item-list clearfix">
+            <!-- 二级三级分类 -->
+            <!-- 注意block、none需要写字符串格式，否则是变量 -->
+            <div
+              class="item-list clearfix"
+              :style="{ display: index == currentIndex ? 'block' : 'none' }"
+            >
               <div class="subitem">
                 <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
                   <dt>
-                    <a href="">{{ c2.categoryName }}</a>
+                    <a :data-categoryname="c2.categoryName" :data-category2id="c2.categoryId">{{
+                      c2.categoryName
+                    }}</a>
+                    <!-- <router-link to="/search">{{ c2.categoryName }}</router-link> -->
                   </dt>
                   <dd>
                     <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                      <a href="">{{ c3.categoryName }}</a>
+                      <a :data-categoryname="c3.categoryName" :data-category3id="c3.categoryId">{{
+                        c3.categoryName
+                      }}</a>
+                      <!-- <router-link to="/search">{{ c3.categoryName }}</router-link> -->
                     </em>
                   </dd>
                 </dl>
@@ -42,12 +63,44 @@
 
 <script>
   import { mapState } from 'vuex'
+  import throttle from 'lodash/throttle'
   export default {
     name: 'TypeNav',
+    data() {
+      return {
+        currentIndex: -1
+      }
+    },
     computed: {
       ...mapState({
         categoryList: state => state.home.categoryList
       })
+    },
+    methods: {
+      changeIndex: throttle(function (index) {
+        this.currentIndex = index
+      }, 1),
+      leave() {
+        this.currentIndex = -1
+      },
+      // 利用编程时导航+事件委派解决卡顿问题
+      goSearch(event) {
+        const { categoryname, category1id, category2id, category3id } = event.target.dataset
+        const location = { name: 'search' }
+        const query = { categoryname }
+
+        if (categoryname) {
+          if (category1id) {
+            query.category1id = category1id
+          } else if (category2id) {
+            query.category2id = category2id
+          } else if (category3id) {
+            query.category3id = category3id
+          }
+          location.query = query
+          this.$router.push(location)
+        }
+      }
     },
     mounted() {
       this.$store.dispatch('categoryList')
@@ -99,7 +152,7 @@
         .all-sort-list2 {
           .item {
             h3 {
-              line-height: 30px;
+              line-height: 28px;
               font-size: 14px;
               font-weight: 400;
               overflow: hidden;
@@ -165,11 +218,18 @@
               }
             }
 
-            &:hover {
-              .item-list {
-                display: block;
-              }
-            }
+            // &:hover {
+            //   .item-list {
+            //     display: block;
+            //   }
+            // }
+          }
+          /* .item:hover {
+                                                                                                                                              background-color: skyblue;
+                                                                                                                                            } */
+          // 使用另一种方法练习
+          .current {
+            background-color: orange;
           }
         }
       }
