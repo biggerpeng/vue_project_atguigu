@@ -114,7 +114,6 @@
 
       // 挂载完毕根据路径确定以及导航是否展示
       if (this.$route.path === '/home') this.show = true
-      console.log(this.$store.state.home.categoryList)
     }
   }
 </script>
@@ -236,8 +235,8 @@
             // }
           }
           /* .item:hover {
-                                                                                                                                                                                                                background-color: skyblue;
-                                                                                                                                                                                                              } */
+                                                                                                                                                                                                                  background-color: skyblue;
+                                                                                                                                                                                                                } */
           // 使用另一种方法练习
           .current {
             background-color: orange;

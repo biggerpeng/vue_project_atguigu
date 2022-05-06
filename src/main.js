@@ -6,11 +6,14 @@ import App from './App.vue'
 import TypeNav from '@/components/TypeNav'
 Vue.component(TypeNav.name, TypeNav)
 
+// 执行mock
+import '@/mock/mockServe'
+
 // 导入store
 import store from '@/store'
 
-// 执行mock
-import '@/mock/mockServe'
+// 引入swiper样式
+import 'swiper/css/swiper.css'
 
 Vue.config.productionTip = false
 
