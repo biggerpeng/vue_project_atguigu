@@ -106,34 +106,33 @@
     },
     updated() {
       /* // 放在这不完美，因为组件更新又会new一个
-                var mySwiper = new Swiper('.swiper-container', {
-                  // direction: 'vertical', // 垂直切换选项
-                  loop: true, // 循环模式选项
+                  var mySwiper = new Swiper('.swiper-container', {
+                    // direction: 'vertical', // 垂直切换选项
+                    loop: true, // 循环模式选项
 
-                  // 如果需要分页器
-                  pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true
-                  },
+                    // 如果需要分页器
+                    pagination: {
+                      el: '.swiper-pagination',
+                      clickable: true
+                    },
 
-                  // 如果需要前进后退按钮
-                  navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev'
-                  },
+                    // 如果需要前进后退按钮
+                    navigation: {
+                      nextEl: '.swiper-button-next',
+                      prevEl: '.swiper-button-prev'
+                    },
 
-                  // 如果需要滚动条
-                  scrollbar: {
-                    el: '.swiper-scrollbar'
-                  }
-                }) */
+                    // 如果需要滚动条
+                    scrollbar: {
+                      el: '.swiper-scrollbar'
+                    }
+                  }) */
     },
     watch: {
       // watch结合nextTick解决轮播图问题
       bannerList: {
         handler(newValue, oldValue) {
           this.$nextTick(() => {
-            console.log(newValue)
             var mySwiper = new Swiper('.swiper-container', {
               // direction: 'vertical', // 垂直切换选项
               loop: true, // 循环模式选项
