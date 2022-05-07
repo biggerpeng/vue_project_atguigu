@@ -60,6 +60,7 @@
       goSearch() {
         // this.$router.push('/search/' + this.keyword + '?k=' + this.keyword)
         // this.$router.push(`/search/ ${this.keyword} ?k=${this.keyword} `)
+        if (this.keyword === '') return
         this.$router.push({
           name: 'search',
           params: {

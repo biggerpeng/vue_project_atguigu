@@ -15,3 +15,11 @@ export const getBanner = () => mockRequests.get('/banner')
 
 // 获取floor数据
 export const getFloor = () => mockRequests.get('/floor')
+
+// 获取搜索列表
+export const getSearchInfo = params =>
+  requests({
+    url: '/list',
+    method: 'post',
+    data: params
+  })
