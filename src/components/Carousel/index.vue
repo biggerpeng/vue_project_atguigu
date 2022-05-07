@@ -22,12 +22,12 @@
     watch: {
       //可以直接监视实例上的属性，且不需要this?
       list: {
-        immediate: true,//这里很可能是导致bug的原因
+        // immediate: true,//这里很可能是导致bug的原因
         handler() {
           this.$nextTick(() => {
             let mySwiper = new Swiper('.swiper-container', {
               // direction: 'vertical', // 垂直切换选项
-              // observer: true,
+              observer: true,
               loop: true, // 循环模式选项
               // 如果需要分页器
               pagination: {
