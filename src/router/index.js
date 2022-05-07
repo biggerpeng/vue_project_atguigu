@@ -56,16 +56,16 @@ export default new VueRouter({
       component: Search,
       meta: {
         show: true
-      },
+      }
       // props传参三种写法
       // props:true
       // props: { a: 1, b: 2 }
-      props($route) {
+      /* props($route) {
         return {
           a: $route.params.keyword,
           b: $route.query.k
         }
-      }
+      } */
     },
     {
       path: '/login',

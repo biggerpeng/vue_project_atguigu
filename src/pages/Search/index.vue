@@ -119,11 +119,35 @@
   import SearchSelector from './SearchSelector/SearchSelector'
   export default {
     name: 'Search',
+    data() {
+      return {
+        searchParams: {
+          category1Id: '',
+          category2Id: '',
+          category3Id: '',
+          categoryName: '',
+          keyword: '',
+          order: '',
+          pageNo: 1,
+          pageSize: 10,
+          props: [''],
+          trademark: ''
+        }
+      }
+    },
     components: {
       SearchSelector
     },
+    beforeMount() {
+      Object.assign(this.searchParams, this.$route.params, this.$route.query)
+      this.$store.dispatch('getSearchInfo', this.searchParams)
+    },
+    beforeRouteUpdate() {
+      Object.assign(this.searchParams, this.$route.params, this.$route.query)
+      this.$store.dispatch('getSearchInfo', this.searchParams)
+    },
     mounted() {
-      this.$store.dispatch('getSearchInfo')
+      // this.$store.dispatch('getSearchInfo')
     },
     computed: {
       ...mapGetters(['goodsList'])
