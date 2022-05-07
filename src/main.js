@@ -6,6 +6,10 @@ import App from './App.vue'
 import TypeNav from '@/components/TypeNav'
 Vue.component(TypeNav.name, TypeNav)
 
+// 全局注册轮播图组件
+import Carousel from '@/components/Carousel'
+Vue.component(Carousel.name, Carousel)
+
 // 执行mock
 import '@/mock/mockServe'
 
