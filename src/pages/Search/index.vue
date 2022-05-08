@@ -11,7 +11,12 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{ searchParams.categoryName }}<i @click="removeCategoryName">×</i>
+            </li>
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+            </li>
           </ul>
         </div>
 
@@ -148,6 +153,29 @@
     methods: {
       getData() {
         this.$store.dispatch('getSearchInfo', this.searchParams)
+      },
+      removeCategoryName() {
+        /*  this.searchParams = {
+                                          //直接赋值一个对象，vue能检测到，该对象里的属性具有响应式
+                                          category1Id: undefined,
+                                          category2Id: undefined,
+                                          category3Id: undefined, //使用undefined优化网络
+                                          categoryName: '',
+                                          keyword: '',
+                                          order: '',
+                                          pageNo: 1,
+                                          pageSize: 10,
+                                          props: [''],
+                                          trademark: ''
+                                        }
+                                        this.getData() */
+
+        // 地址栏也需要修改，因为这里使用了路由跳转，而watch监听了route，所以以上可以注释掉
+        this.$router.push('search')
+      },
+      removeKeyword() {
+        this.$router.push({ name: 'search' }) //这里为什么直接用字符串search会导致路径多了一个search
+        this.$bus.$emit('clear')
       }
     },
     watch: {

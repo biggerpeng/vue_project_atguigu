@@ -24,5 +24,8 @@ Vue.config.productionTip = false
 new Vue({
   router, //没有Vue.use(VueRouter)，vue会忽略这个配置项，因此要在路由配置文件使用路由插件
   store,
+  beforeCreate() {
+    Vue.prototype.$bus = this
+  },
   render: h => h(App)
 }).$mount('#app')
