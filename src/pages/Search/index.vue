@@ -135,22 +135,23 @@
         }
       }
     },
+    computed: {
+      ...mapGetters(['goodsList'])
+    },
     components: {
       SearchSelector
     },
     beforeMount() {
       Object.assign(this.searchParams, this.$route.params, this.$route.query)
-      this.$store.dispatch('getSearchInfo', this.searchParams)
-    },
-    beforeRouteUpdate() {
-      Object.assign(this.searchParams, this.$route.params, this.$route.query)
-      this.$store.dispatch('getSearchInfo', this.searchParams)
     },
     mounted() {
       // this.$store.dispatch('getSearchInfo')
+      this.getData()
     },
-    computed: {
-      ...mapGetters(['goodsList'])
+    methods: {
+      getData() {
+        this.$store.dispatch('getSearchInfo', this.searchParams)
+      }
     }
   }
 </script>
