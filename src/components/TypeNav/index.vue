@@ -91,15 +91,15 @@
       goSearch(event) {
         const { categoryname, category1id, category2id, category3id } = event.target.dataset
         const location = { name: 'search' }
-        const query = { categoryname }
+        const query = { categoryName: categoryname }
 
         if (categoryname) {
           if (category1id) {
-            query.category1id = category1id
+            query.category1Id = category1id
           } else if (category2id) {
-            query.category2id = category2id
+            query.category2Id = category2id
           } else if (category3id) {
-            query.category3id = category3id
+            query.category3Id = category3id
           }
           location.query = query
           this.$router.push(location)
@@ -235,8 +235,8 @@
             // }
           }
           /* .item:hover {
-                                                                                                                                                                                                                  background-color: skyblue;
-                                                                                                                                                                                                                } */
+                                                                                                                                                                                                                            background-color: skyblue;
+                                                                                                                                                                                                                          } */
           // 使用另一种方法练习
           .current {
             background-color: orange;

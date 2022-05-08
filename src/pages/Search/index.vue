@@ -12,9 +12,6 @@
           </ul>
           <ul class="fl sui-tag">
             <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
           </ul>
         </div>
 
@@ -151,6 +148,26 @@
     methods: {
       getData() {
         this.$store.dispatch('getSearchInfo', this.searchParams)
+      }
+    },
+    watch: {
+      $route(newValue, oldValue) {
+        this.searchParams = {
+          //直接赋值一个对象，vue能检测到，该对象里的属性具有响应式
+          category1Id: '',
+          category2Id: '',
+          category3Id: '',
+          categoryName: '',
+          keyword: '',
+          order: '',
+          pageNo: 1,
+          pageSize: 10,
+          props: [''],
+          trademark: ''
+        }
+
+        Object.assign(this.searchParams, this.$route.params, this.$route.query)
+        this.getData()
       }
     }
   }
