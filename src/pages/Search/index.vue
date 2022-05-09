@@ -12,21 +12,13 @@
           </ul>
           <ul class="fl sui-tag">
             <!-- 分类名面包屑 -->
-            <li class="with-x" v-if="searchParams.categoryName">
-              {{ searchParams.categoryName }}<i @click="removeCategoryName">×</i>
-            </li>
+            <li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i @click="removeCategoryName">×</i></li>
             <!-- 关键字面包屑 -->
-            <li class="with-x" v-if="searchParams.keyword">
-              {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
-            </li>
+            <li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removeKeyword">×</i></li>
             <!-- 品牌面包屑 -->
-            <li class="with-x" v-if="searchParams.trademark">
-              {{ searchParams.trademark.split(':')[1] }}<i @click="removeTrademark">×</i>
-            </li>
+            <li class="with-x" v-if="searchParams.trademark">{{ searchParams.trademark.split(':')[1] }}<i @click="removeTrademark">×</i></li>
             <!-- 属性面包屑 -->
-            <li class="with-x" v-for="(prop, index) in searchParams.props" :key="prop">
-              {{ prop.split(':')[1] }}<i @click="removeProp(index)">×</i>
-            </li>
+            <li class="with-x" v-for="(prop, index) in searchParams.props" :key="prop">{{ prop.split(':')[1] }}<i @click="removeProp(index)">×</i></li>
           </ul>
         </div>
 
@@ -38,23 +30,11 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="changeOrder(1)">
+                  <a>综合<span v-show="isOne" :class="arrow"></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwo }" @click="changeOrder(2)">
+                  <a>价格<span v-show="isTwo" :class="arrow"></span></a>
                 </li>
               </ul>
             </div>
@@ -79,12 +59,7 @@
                     <i class="command">已有<span>2000</span>人评价</i>
                   </div>
                   <div class="operate">
-                    <a
-                      href="success-cart.html"
-                      target="_blank"
-                      class="sui-btn btn-bordered btn-danger"
-                      >加入购物车</a
-                    >
+                    <a href="success-cart.html" target="_blank" class="sui-btn btn-bordered btn-danger">加入购物车</a>
                     <a href="javascript:void(0);" class="sui-btn btn-bordered">收藏</a>
                   </div>
                 </div>
@@ -139,7 +114,7 @@
           category3Id: '',
           categoryName: '',
           keyword: '',
-          order: '',
+          order: '1:desc',
           pageNo: 1,
           pageSize: 10,
           props: [],
@@ -148,7 +123,20 @@
       }
     },
     computed: {
-      ...mapGetters(['goodsList'])
+      ...mapGetters(['goodsList']),
+      isOne() {
+        return this.searchParams.order.indexOf(1) !== -1
+      },
+      isTwo() {
+        return this.searchParams.order.indexOf(2) !== -1
+      },
+      arrow() {
+        return {
+          iconfont: true,
+          'icon-caret-down': this.searchParams.order.indexOf('desc') !== -1,
+          'icon-caret-up': this.searchParams.order.indexOf('asc') !== -1
+        }
+      }
     },
     components: {
       SearchSelector
@@ -193,6 +181,51 @@
       // 移除属性面包屑
       removeProp(index) {
         this.searchParams.props.splice(index, 1)
+        this.getData()
+      },
+      // 排序事件
+      changeOrder(flag) {
+        /* if (flag === 1) {
+                            switch (this.searchParams.order) {
+                              case '1:desc':
+                                this.searchParams.order = '1:asc'
+                                break
+                              case '1:asc':
+                                this.searchParams.order = '1:desc'
+                                break
+                              case '2:asc':
+                                this.searchParams.order = '1:desc'
+                                break
+                              case '2:desc':
+                                this.searchParams.order = '1:desc'
+                                break
+                            }
+                          } else {
+                            switch (this.searchParams.order) {
+                              case '1:desc':
+                                this.searchParams.order = '2:asc'
+                                break
+                              case '1:asc':
+                                this.searchParams.order = '2:asc'
+                                break
+                              case '2:asc':
+                                this.searchParams.order = '2:desc'
+                                break
+                              case '2:desc':
+                                this.searchParams.order = '2:asc'
+                                break
+                            }//这种方法比较笨
+                          } */
+        // 比较好的思路是判断点击的按钮与active按钮是否是同一个，同一个则排序取反，不同则跳到相应的按钮
+        const originFlag = this.searchParams.order.split(':')[0]
+        const originOrder = this.searchParams.order.split(':')[1]
+        let newOrder = ''
+        if (flag == originFlag) {
+          newOrder = `${originFlag}:${originOrder === 'desc' ? 'asc' : 'desc'}`
+        } else {
+          newOrder = `${flag}:desc`
+        }
+        this.searchParams.order = newOrder
         this.getData()
       }
     },
