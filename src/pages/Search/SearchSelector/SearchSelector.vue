@@ -7,7 +7,7 @@
           <li
             v-for="trademark in trademarkList"
             :key="trademark.tmId"
-            @click="changeTrademark(trademark.tmId, trademark.tmName)"
+            @click="changeTrademark(trademark)"
           >
             {{ trademark.tmName }}
           </li>
@@ -40,22 +40,9 @@
     computed: {
       ...mapGetters(['trademarkList', 'attrsList'])
     },
-    props: ['searchParams'],
     methods: {
-      changeTrademark(tmId, tmName) {
-        this.$router.push({
-          name: 'search',
-          params: {
-            keyword: this.searchParams.keyword || undefined,
-            trademark: `${tmId}:${tmName}`
-          },
-          query: {
-            categoryName: this.searchParams.categoryName || undefined,
-            category1Id: this.searchParams.category1Id || undefined,
-            category2Id: this.searchParams.category2Id || undefined,
-            category3Id: this.searchParams.category3Id || undefined
-          }
-        })
+      changeTrademark(trademark) {
+        this.$emit('changeTrademark', trademark)
       }
     }
   }
