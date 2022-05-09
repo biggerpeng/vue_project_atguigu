@@ -21,7 +21,7 @@
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector :searchParams="searchParams" />
 
         <!--details-->
         <div class="details clearfix">
@@ -156,43 +156,50 @@
       },
       removeCategoryName() {
         /*  this.searchParams = {
-                                          //直接赋值一个对象，vue能检测到，该对象里的属性具有响应式
-                                          category1Id: undefined,
-                                          category2Id: undefined,
-                                          category3Id: undefined, //使用undefined优化网络
-                                          categoryName: '',
-                                          keyword: '',
-                                          order: '',
-                                          pageNo: 1,
-                                          pageSize: 10,
-                                          props: [''],
-                                          trademark: ''
-                                        }
-                                        this.getData() */
+                                                          //直接赋值一个对象，vue能检测到，该对象里的属性具有响应式
+                                                          category1Id: undefined,
+                                                          category2Id: undefined,
+                                                          category3Id: undefined, //使用undefined优化网络
+                                                          categoryName: '',
+                                                          keyword: '',
+                                                          order: '',
+                                                          pageNo: 1,
+                                                          pageSize: 10,
+                                                          props: [''],
+                                                          trademark: ''
+                                                        }
+                                                        this.getData() */
 
         // 地址栏也需要修改，因为这里使用了路由跳转，而watch监听了route，所以以上可以注释掉
-        this.$router.push('search')
+        this.searchParams.categoryName = ''
+        this.$router.push({ name: 'search' })
       },
       removeKeyword() {
+        this.searchParams.keyword = ''
         this.$router.push({ name: 'search' }) //这里为什么直接用字符串search会导致路径多了一个search
         this.$bus.$emit('clear')
       }
     },
     watch: {
       $route(newValue, oldValue) {
-        this.searchParams = {
-          //直接赋值一个对象，vue能检测到，该对象里的属性具有响应式
-          category1Id: '',
-          category2Id: '',
-          category3Id: '',
-          categoryName: '',
-          keyword: '',
-          order: '',
-          pageNo: 1,
-          pageSize: 10,
-          props: [''],
-          trademark: ''
-        }
+        /* this.searchParams = {
+                          //直接赋值一个对象，vue能检测到，该对象里的属性具有响应式
+                          category1Id: '',
+                          category2Id: '',
+                          category3Id: '',
+                          categoryName: '',
+                          keyword: '',
+                          order: '',
+                          pageNo: 1,
+                          pageSize: 10,
+                          props: [''],
+                          trademark: ''
+                        } */
+        this.searchParams.category1Id = ''
+        this.searchParams.category2Id = ''
+        this.searchParams.category3Id = ''
+        this.searchParams.categoryName = ''
+        this.searchParams.keyword = ''
 
         Object.assign(this.searchParams, this.$route.params, this.$route.query)
         this.getData()

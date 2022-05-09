@@ -4,7 +4,13 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="trademark in trademarkList" :key="trademark.tmId">{{ trademark.tmName }}</li>
+          <li
+            v-for="trademark in trademarkList"
+            :key="trademark.tmId"
+            @click="changeTrademark(trademark.tmId, trademark.tmName)"
+          >
+            {{ trademark.tmName }}
+          </li>
           <!-- <li><img src="./images/phone02.png" /></li> -->
         </ul>
       </div>
@@ -33,6 +39,24 @@
     name: 'SearchSelector',
     computed: {
       ...mapGetters(['trademarkList', 'attrsList'])
+    },
+    props: ['searchParams'],
+    methods: {
+      changeTrademark(tmId, tmName) {
+        this.$router.push({
+          name: 'search',
+          params: {
+            keyword: this.searchParams.keyword || undefined,
+            trademark: `${tmId}:${tmName}`
+          },
+          query: {
+            categoryName: this.searchParams.categoryName || undefined,
+            category1Id: this.searchParams.category1Id || undefined,
+            category2Id: this.searchParams.category2Id || undefined,
+            category3Id: this.searchParams.category3Id || undefined
+          }
+        })
+      }
     }
   }
 </script>
