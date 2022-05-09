@@ -23,7 +23,11 @@
       <div class="fl key">{{ attr.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attrValue, index) in attr.attrValueList" :key="index">
+          <li
+            v-for="(attrValue, index) in attr.attrValueList"
+            :key="index"
+            @click="selectAttr(attr, attrValue)"
+          >
             <a>{{ attrValue }}</a>
           </li>
         </ul>
@@ -43,6 +47,9 @@
     methods: {
       changeTrademark(trademark) {
         this.$emit('changeTrademark', trademark)
+      },
+      selectAttr(attr, attrValue) {
+        this.$emit('selectAttr', attr, attrValue)
       }
     }
   }

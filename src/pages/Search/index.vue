@@ -11,20 +11,27 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
+            <!-- 分类名面包屑 -->
             <li class="with-x" v-if="searchParams.categoryName">
               {{ searchParams.categoryName }}<i @click="removeCategoryName">×</i>
             </li>
+            <!-- 关键字面包屑 -->
             <li class="with-x" v-if="searchParams.keyword">
               {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
             </li>
+            <!-- 品牌面包屑 -->
             <li class="with-x" v-if="searchParams.trademark">
-              {{ searchParams.trademark.split(':')[1] }}<i>×</i>
+              {{ searchParams.trademark.split(':')[1] }}<i @click="removeTrademark">×</i>
+            </li>
+            <!-- 属性面包屑 -->
+            <li class="with-x" v-for="(prop, index) in searchParams.props" :key="prop">
+              {{ prop.split(':')[1] }}<i @click="removeProp(index)">×</i>
             </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @changeTrademark="changeTrademark" />
+        <SearchSelector @changeTrademark="changeTrademark" @selectAttr="selectAttr" />
 
         <!--details-->
         <div class="details clearfix">
@@ -135,7 +142,7 @@
           order: '',
           pageNo: 1,
           pageSize: 10,
-          props: [''],
+          props: [],
           trademark: ''
         }
       }
@@ -166,9 +173,26 @@
         this.$router.push({ name: 'search' }) //这里为什么直接用字符串search会导致路径多了一个search
         this.$bus.$emit('clear')
       },
-      // 监听自定义事件
+      // 监听品牌选择自定义事件
       changeTrademark(trademark) {
         this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
+        this.getData()
+      },
+      // 移除品牌面包屑
+      removeTrademark() {
+        this.searchParams.trademark = ''
+        this.getData()
+      },
+      // 监听属性选择自定义事件
+      selectAttr(attr, attrValue) {
+        const prop = `${attr.attrId}:${attrValue}:${attr.attrName}`
+        if (this.searchParams.props.includes(prop)) return
+        this.searchParams.props.push(prop)
+        this.getData()
+      },
+      // 移除属性面包屑
+      removeProp(index) {
+        this.searchParams.props.splice(index, 1)
         this.getData()
       }
     },
