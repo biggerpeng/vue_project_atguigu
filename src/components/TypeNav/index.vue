@@ -17,38 +17,23 @@
         <div class="sort" v-show="show">
           <div class="all-sort-list2" @click="goSearch">
             <!-- 一级分类 -->
-            <div
-              class="item bo"
-              v-for="(c1, index) in categoryList"
-              :key="c1.categoryId"
-              @mouseenter="changeIndex(index)"
-              :class="{ current: currentIndex === index }"
-            >
+            <div class="item bo" v-for="(c1, index) in categoryList" :key="c1.categoryId" @mouseenter="changeIndex(index)" :class="{ current: currentIndex === index }">
               <h3>
-                <a :data-categoryname="c1.categoryName" :data-category1id="c1.categoryId">{{
-                  c1.categoryName
-                }}</a>
+                <a :data-categoryname="c1.categoryName" :data-category1id="c1.categoryId">{{ c1.categoryName }}</a>
                 <!-- <router-link to="/search">{{ c1.categoryName }}</router-link> -->
               </h3>
               <!-- 二级三级分类 -->
               <!-- 注意block、none需要写字符串格式，否则是变量 -->
-              <div
-                class="item-list clearfix"
-                :style="{ display: index == currentIndex ? 'block' : 'none' }"
-              >
+              <div class="item-list clearfix" :style="{ display: index == currentIndex ? 'block' : 'none' }">
                 <div class="subitem">
                   <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
                     <dt>
-                      <a :data-categoryname="c2.categoryName" :data-category2id="c2.categoryId">{{
-                        c2.categoryName
-                      }}</a>
+                      <a :data-categoryname="c2.categoryName" :data-category2id="c2.categoryId">{{ c2.categoryName }}</a>
                       <!-- <router-link to="/search">{{ c2.categoryName }}</router-link> -->
                     </dt>
                     <dd>
                       <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                        <a :data-categoryname="c3.categoryName" :data-category3id="c3.categoryId">{{
-                          c3.categoryName
-                        }}</a>
+                        <a :data-categoryname="c3.categoryName" :data-category3id="c3.categoryId">{{ c3.categoryName }}</a>
                         <!-- <router-link to="/search">{{ c3.categoryName }}</router-link> -->
                       </em>
                     </dd>
@@ -235,8 +220,8 @@
             // }
           }
           /* .item:hover {
-                                                                                                                                                                                                                                  background-color: skyblue;
-                                                                                                                                                                                                                                } */
+                                                                                                                                                                                                                                    background-color: skyblue;
+                                                                                                                                                                                                                                  } */
           // 使用另一种方法练习
           .current {
             background-color: orange;

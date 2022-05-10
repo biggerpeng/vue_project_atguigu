@@ -2,8 +2,7 @@ import requests from './request'
 import mockRequests from './mockAjax'
 
 // 创建并导出分类请求函数
-export const getBaseCategoryList = () =>
-  requests({ url: '/product/getBaseCategoryList', methods: 'get' })
+export const getBaseCategoryList = () => requests({ url: '/product/getBaseCategoryList', methods: 'get' })
 
 // mock banner模拟请求
 /* export const getBanner = () => {
@@ -22,4 +21,11 @@ export const getSearchInfo = params =>
     url: '/list',
     method: 'post',
     data: params
+  })
+
+// 获取详情信息
+export const getDetail = skuId =>
+  requests({
+    url: `/item/${skuId}`,
+    method: 'get'
   })
