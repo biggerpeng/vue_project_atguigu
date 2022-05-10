@@ -15,6 +15,7 @@
     <button>下一页</button>
 
     <button style="margin-left: 30px">共 {{ total }} 条</button>
+    <h1>{{ startPageAndEndPage }}</h1>
   </div>
 </template>
 
@@ -25,6 +26,32 @@
     computed: {
       totalPage() {
         return Math.ceil(this.total / this.pageSize)
+      },
+      startPageAndEndPage() {
+        const { pageNow, pageSize, totalPage, continues } = this
+        // 注意total是总条数
+        // 初始化开始页码和结束页码
+        let start = 0,
+          end = 0
+        if (totalPage < continues) {
+          start = 1
+          end = totalPage
+        } else {
+          start = pageNow - parseInt(continues / 2)
+          end = pageNow + parseInt(continues / 2)
+
+          // 若当前页码靠前，start小于1
+          if (start < 1) {
+            start = 1
+            end = continues
+          }
+          // 若当前页码靠后，end大于total
+          if (end > totalPage) {
+            end = totalPage
+            start = totalPage - continues + 1
+          }
+        }
+        return { start, end }
       }
     }
   }
