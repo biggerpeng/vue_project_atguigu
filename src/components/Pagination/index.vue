@@ -1,32 +1,33 @@
 <template>
   <div class="pagination">
-    <button>上一页</button>
-    <button v-if="startPageAndEndPage.start !== 1">1</button>
+    <!-- 粗心 pageNo === 1 不要写成pageNo = 1，否则就是赋值操作，修改prop-->
+    <button :disabled="pageNo === 1" @click="$emit('changePage', pageNo - 1)">上一页</button>
+    <button v-if="startPageAndEndPage.start !== 1" @click="$emit('changePage', 1)" :class="{ active: pageNo === 1 }">1</button>
     <button v-if="startPageAndEndPage.start > 2">···</button>
 
     <template v-for="(n, index) in startPageAndEndPage.end">
-      <button :key="index" v-if="n >= startPageAndEndPage.start">{{ n }}</button>
+      <button :key="index" v-if="n >= startPageAndEndPage.start" @click="$emit('changePage', n)" :class="{ active: pageNo === n }">{{ n }}</button>
     </template>
 
     <button v-if="startPageAndEndPage.end < totalPage - 1">···</button>
-    <button v-if="startPageAndEndPage.end < totalPage">{{ totalPage }}</button>
-    <button>下一页</button>
+    <button v-if="startPageAndEndPage.end < totalPage" @click="$emit('changePage', totalPage)" :class="{ active: pageNo === totalPage }">{{ totalPage }}</button>
+    <button :disabled="pageNo === totalPage" @click="$emit('changePage', pageNo + 1)">下一页</button>
 
     <button style="margin-left: 30px">共 {{ total }} 条</button>
-    <h1>{{ startPageAndEndPage }} 当前页码{{ pageNow }}</h1>
+    <h1>{{ startPageAndEndPage }} 当前页码{{ pageNo }}</h1>
   </div>
 </template>
 
 <script>
   export default {
     name: 'Pagination',
-    props: ['pageNow', 'pageSize', 'total', 'continues'],
+    props: ['pageNo', 'pageSize', 'total', 'continues'],
     computed: {
       totalPage() {
         return Math.ceil(this.total / this.pageSize)
       },
       startPageAndEndPage() {
-        const { pageNow, pageSize, totalPage, continues } = this
+        const { pageNo, pageSize, totalPage, continues } = this
         // 注意total是总条数
         // 初始化开始页码和结束页码
         let start = 0,
@@ -35,8 +36,8 @@
           start = 1
           end = totalPage
         } else {
-          start = pageNow - parseInt(continues / 2)
-          end = pageNow + parseInt(continues / 2)
+          start = pageNo - parseInt(continues / 2)
+          end = pageNo + parseInt(continues / 2)
 
           // 若当前页码靠前，start小于1
           if (start < 1) {

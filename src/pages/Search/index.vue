@@ -67,7 +67,7 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <Pagination :pageNow="6" :pageSize="10" :total="91" :continues="5"></Pagination>
+          <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @changePage="changePage"></Pagination>
           <!-- <div class="fr page">
             <div class="sui-pagination clearfix">
               <ul>
@@ -104,7 +104,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapState } from 'vuex'
   import SearchSelector from './SearchSelector/SearchSelector'
   export default {
     name: 'Search',
@@ -138,7 +138,11 @@
           'icon-caret-down': this.searchParams.order.indexOf('desc') !== -1,
           'icon-caret-up': this.searchParams.order.indexOf('asc') !== -1
         }
-      }
+      },
+      // 获取仓库中searchList总条数
+      ...mapState({
+        total: state => state.search.searchList.total
+      })
     },
     components: {
       SearchSelector
@@ -188,36 +192,36 @@
       // 排序事件
       changeOrder(flag) {
         /* if (flag === 1) {
-                                                            switch (this.searchParams.order) {
-                                                              case '1:desc':
-                                                                this.searchParams.order = '1:asc'
-                                                                break
-                                                              case '1:asc':
-                                                                this.searchParams.order = '1:desc'
-                                                                break
-                                                              case '2:asc':
-                                                                this.searchParams.order = '1:desc'
-                                                                break
-                                                              case '2:desc':
-                                                                this.searchParams.order = '1:desc'
-                                                                break
-                                                            }
-                                                          } else {
-                                                            switch (this.searchParams.order) {
-                                                              case '1:desc':
-                                                                this.searchParams.order = '2:asc'
-                                                                break
-                                                              case '1:asc':
-                                                                this.searchParams.order = '2:asc'
-                                                                break
-                                                              case '2:asc':
-                                                                this.searchParams.order = '2:desc'
-                                                                break
-                                                              case '2:desc':
-                                                                this.searchParams.order = '2:asc'
-                                                                break
-                                                            }//这种方法比较笨
-                                                          } */
+                                                                                    switch (this.searchParams.order) {
+                                                                                      case '1:desc':
+                                                                                        this.searchParams.order = '1:asc'
+                                                                                        break
+                                                                                      case '1:asc':
+                                                                                        this.searchParams.order = '1:desc'
+                                                                                        break
+                                                                                      case '2:asc':
+                                                                                        this.searchParams.order = '1:desc'
+                                                                                        break
+                                                                                      case '2:desc':
+                                                                                        this.searchParams.order = '1:desc'
+                                                                                        break
+                                                                                    }
+                                                                                  } else {
+                                                                                    switch (this.searchParams.order) {
+                                                                                      case '1:desc':
+                                                                                        this.searchParams.order = '2:asc'
+                                                                                        break
+                                                                                      case '1:asc':
+                                                                                        this.searchParams.order = '2:asc'
+                                                                                        break
+                                                                                      case '2:asc':
+                                                                                        this.searchParams.order = '2:desc'
+                                                                                        break
+                                                                                      case '2:desc':
+                                                                                        this.searchParams.order = '2:asc'
+                                                                                        break
+                                                                                    }//这种方法比较笨
+                                                                                  } */
         // 比较好的思路是判断点击的按钮与active按钮是否是同一个，同一个则排序取反，不同则跳到相应的按钮
         const originFlag = this.searchParams.order.split(':')[0]
         const originOrder = this.searchParams.order.split(':')[1]
@@ -228,6 +232,11 @@
           newOrder = `${flag}:desc`
         }
         this.searchParams.order = newOrder
+        this.getData()
+      },
+      // 监听改变页码自定义事件
+      changePage(page) {
+        this.searchParams.pageNo = page
         this.getData()
       }
     },
