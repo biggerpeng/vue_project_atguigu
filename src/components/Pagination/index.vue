@@ -1,21 +1,19 @@
 <template>
   <div class="pagination">
     <button>上一页</button>
-    <button>1</button>
-    <button>···</button>
+    <button v-if="startPageAndEndPage.start !== 1">1</button>
+    <button v-if="startPageAndEndPage.start > 2">···</button>
 
-    <button>3</button>
-    <button>4</button>
-    <button>5</button>
-    <button>6</button>
-    <button>7</button>
+    <template v-for="(n, index) in startPageAndEndPage.end">
+      <button :key="index" v-if="n >= startPageAndEndPage.start">{{ n }}</button>
+    </template>
 
-    <button>···</button>
-    <button>{{ totalPage }}</button>
+    <button v-if="startPageAndEndPage.end < totalPage - 1">···</button>
+    <button v-if="startPageAndEndPage.end < totalPage">{{ totalPage }}</button>
     <button>下一页</button>
 
     <button style="margin-left: 30px">共 {{ total }} 条</button>
-    <h1>{{ startPageAndEndPage }}</h1>
+    <h1>{{ startPageAndEndPage }} 当前页码{{ pageNow }}</h1>
   </div>
 </template>
 
