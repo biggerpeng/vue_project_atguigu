@@ -66,7 +66,16 @@
               <div class="choosed"></div>
               <dl v-for="spuSaleAttr in spuSaleAttrList" :key="spuSaleAttr.id">
                 <dt class="title">{{ spuSaleAttr.saleAttrName }}</dt>
-                <dd changepirce="0" :class="{ active: spuSaleAttrValue.isChecked === '1' }" v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList" :key="spuSaleAttrValue.id">{{ spuSaleAttrValue.saleAttrValueName }}</dd>
+                <dd
+                  class="poinstyle"
+                  changepirce="0"
+                  :class="{ active: spuSaleAttrValue.isChecked === '1' }"
+                  v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
+                  :key="spuSaleAttrValue.id"
+                  @click="changAttrValue(spuSaleAttrValue, spuSaleAttr.spuSaleAttrValueList)"
+                >
+                  {{ spuSaleAttrValue.saleAttrValueName }}
+                </dd>
               </dl>
             </div>
             <div class="cartWrap">
@@ -330,12 +339,23 @@
     },
     mounted() {
       this.$store.dispatch('getDetailData', this.$route.params.skuId)
+    },
+    methods: {
+      // 属性选中高亮显示
+      changAttrValue(spuSaleAttrValue, spuSaleAttrValueList) {
+        spuSaleAttrValueList.forEach(item => (item.isChecked = '0'))
+        spuSaleAttrValue.isChecked = '1'
+      }
     }
   }
 </script>
 
 <style lang="less" scoped>
   .detail {
+    .poinstyle {
+      cursor: pointer;
+    }
+
     .con {
       width: 1200px;
       margin: 15px auto 0;
