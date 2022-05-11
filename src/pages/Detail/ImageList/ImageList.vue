@@ -42,6 +42,7 @@
     methods: {
       changeIndex(index) {
         this.currentIndex = index
+        this.$bus.$emit('changeIndex', index)
       }
     }
   }
