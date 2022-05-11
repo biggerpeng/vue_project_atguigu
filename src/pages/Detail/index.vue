@@ -80,9 +80,9 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" @input="changeNum" />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum === 1 ? undefined : skuNum--">-</a>
               </div>
               <div class="add">
                 <a href="javascript:">加入购物车</a>
@@ -330,6 +330,11 @@
 
   export default {
     name: 'Detail',
+    data() {
+      return {
+        skuNum: 1
+      }
+    },
     components: {
       ImageList,
       Zoom
@@ -345,6 +350,15 @@
       changAttrValue(spuSaleAttrValue, spuSaleAttrValueList) {
         spuSaleAttrValueList.forEach(item => (item.isChecked = '0'))
         spuSaleAttrValue.isChecked = '1'
+      },
+      // 判断用户输入商品数量
+      changeNum(event) {
+        let num = event.target.value
+        if (isNaN(num * 1) || num < 2) {
+          this.skuNum = 1 //解决输入为非数字和负数的情况
+        } else {
+          this.skuNum = parseInt(num) //用作取整
+        }
       }
     }
   }
