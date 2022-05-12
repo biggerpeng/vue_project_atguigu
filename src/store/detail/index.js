@@ -1,7 +1,9 @@
 import { getDetail, reqAddOrChangeShopCart } from '@/api/index'
+import { getUUID } from '@/utils/uuid_token'
 
 const state = {
-  goodInfo: {}
+  goodInfo: {},
+  uuid_token: getUUID()
 }
 const getters = {
   categoryView(state) {

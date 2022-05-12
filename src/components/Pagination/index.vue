@@ -10,11 +10,12 @@
     </template>
 
     <button v-if="startPageAndEndPage.end < totalPage - 1">···</button>
-    <button v-if="startPageAndEndPage.end < totalPage" @click="$emit('changePage', totalPage)" :class="{ active: pageNo === totalPage }">{{ totalPage }}</button>
+    <button v-if="startPageAndEndPage.end < totalPage" @click="$emit('changePage', totalPage)" :class="{ active: pageNo === totalPage }">
+      {{ totalPage }}
+    </button>
     <button :disabled="pageNo === totalPage" @click="$emit('changePage', pageNo + 1)">下一页</button>
 
     <button style="margin-left: 30px">共 {{ total }} 条</button>
-    <h1>{{ startPageAndEndPage }} 当前页码{{ pageNo }}</h1>
   </div>
 </template>
 

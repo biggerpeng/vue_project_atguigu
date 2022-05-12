@@ -28,9 +28,6 @@
       skuInfo() {
         return JSON.parse(sessionStorage.getItem('skuInfo'))
       }
-    },
-    mounted() {
-      console.log(this.$route.query)
     }
   }
 </script>

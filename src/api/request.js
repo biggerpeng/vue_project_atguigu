@@ -1,6 +1,7 @@
 import axios from 'axios'
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
+import store from '@/store'
 
 // 创建axios实例
 const requests = axios.create({
@@ -12,7 +13,11 @@ const requests = axios.create({
 
 // 请求拦截器
 requests.interceptors.request.use(config => {
-  nprogress.start()
+  nprogress.start() //进度条
+  if (store.state.detail.uuid_token) {
+    //设置用户临时id请求头
+    config.headers.userTempId = store.state.detail.uuid_token
+  }
   return config
 })
 // 相应拦截器
