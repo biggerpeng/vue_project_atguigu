@@ -29,3 +29,10 @@ export const getDetail = skuId =>
     url: `/item/${skuId}`,
     method: 'get'
   })
+
+// 添加到购物车(对已有物品进行数量改动)
+export const reqAddOrChangeShopCart = (skuId, skuNum) =>
+  requests({
+    url: `/cart/addToCart/${skuId}/${skuNum}`,
+    method: 'post'
+  })

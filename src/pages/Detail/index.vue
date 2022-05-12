@@ -85,7 +85,7 @@
                 <a href="javascript:" class="mins" @click="skuNum === 1 ? undefined : skuNum--">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addShopCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -358,6 +358,17 @@
           this.skuNum = 1 //解决输入为非数字和负数的情况
         } else {
           this.skuNum = parseInt(num) //用作取整
+        }
+      },
+      // 加入购物车
+      async addShopCart() {
+        try {
+          await this.$store.dispatch('addOrChangeShopCart', { skuId: this.$route.params.skuId, skuNum: this.skuNum })
+          // this.$router.push({ name: 'addcartsuccess', query: { skuInfo: this.skuInfo, skuNum: this.skuNum } })//query传对象也行，但是状态栏不好看
+          this.$router.push({ name: 'addcartsuccess', query: { skuNum: this.skuNum } })
+          sessionStorage.setItem('skuInfo', JSON.stringify(this.skuInfo))
+        } catch (error) {
+          alert(error.message)
         }
       }
     }

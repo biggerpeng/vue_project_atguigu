@@ -3,6 +3,7 @@ import Search from '@/pages/Search'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
 export default [
   {
     path: '/home',
@@ -40,12 +41,17 @@ export default [
     path: '/register',
     component: Register,
     meta: {
-      show: false //这个有什么作用？
+      show: false //决定footer显示
     }
   },
   {
     path: '/detail/:skuId',
     component: Detail
+  },
+  {
+    path: '/addcartsuccess',
+    name: 'addcartsuccess',
+    component: AddCartSuccess
   },
   // 重定向
   {
