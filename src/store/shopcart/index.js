@@ -30,6 +30,23 @@ const actions = {
     } else {
       return Promise.reject(new Error('fail'))
     }
+  },
+  // 删除选中商品
+  deleteAllChecked({ state, dispatch }) {
+    let promiseAll = []
+    state.cartInfoList.forEach(item => {
+      item.isChecked ? promiseAll.push(dispatch('deleteShopCart', item.skuId)) : undefined //不要忘了dispatch的actions名字，提示vuex错误，就看看vuex的方法有没有用错
+    })
+    return Promise.all(promiseAll)
+  },
+  // 更改全选状态
+  changeCheckAll({ state, dispatch }, isChecked) {
+    let promiseAll = []
+    state.cartInfoList.forEach(item => {
+      const pm = dispatch('updateShopCart', { skuId: item.skuId, isChecked })
+      promiseAll.push(pm)
+    })
+    return Promise.all(promiseAll)
   }
 }
 const mutations = {
