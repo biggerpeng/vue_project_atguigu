@@ -57,3 +57,10 @@ export const reqUpdateShopCart = (skuId, isChecked) =>
     url: `/cart/checkCart/${skuId}/${isChecked}`,
     method: 'get'
   })
+
+// 获取注册验证码
+export const reqGetRegisterCode = phone =>
+  requests({
+    url: `/user/passport/sendCode/${phone}`,
+    method: 'get'
+  })
