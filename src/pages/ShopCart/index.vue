@@ -14,7 +14,7 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="item in cartInfoList" :key="item.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="item.isChecked" />
+            <input type="checkbox" name="chk_list" :checked="item.isChecked" @change="updateChecked(item.skuId, $event)" />
           </li>
           <li class="cart-list-con2">
             <img :src="item.imgUrl" />
@@ -31,7 +31,7 @@
               :value="item.skuNum"
               minnum="1"
               class="itxt"
-              @change="handler('change', $enent.target.value * 1, item)"
+              @change="handler('change', $event.target.value * 1, item)"
             />
             <a href="javascript:void(0)" class="plus" @click="handler('inc', 1, item)">+</a>
           </li>
@@ -39,7 +39,7 @@
             <span class="sum">{{ item.skuPrice * item.skuNum }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="#none" class="sindelet" @click="deleteSku(item.skuId)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -74,6 +74,11 @@
   import { mapState } from 'vuex'
   export default {
     name: 'ShopCart',
+    data() {
+      return {
+        flag: true
+      }
+    },
     mounted() {
       this.getData()
     },
@@ -95,16 +100,27 @@
     },
     methods: {
       async handler(type, num, sku) {
+        if (!this.flag) return
+        this.flag = false
         switch (type) {
           case 'dec':
             sku.skuNum > 1 ? undefined : (num = 0)
             break //不要忘了break
           case 'change':
+            if (isNaN(num) || num < 1) {
+              num = 0
+            } else {
+              num = parseInt(num) - sku.skuNum
+            }
             break
         }
         try {
           await this.$store.dispatch('addOrChangeShopCart', { skuId: sku.skuId, skuNum: num }) //成功修改数量后在重新获取列表
           this.getData()
+          if (timer) clearTimeout(timer)
+          const timer = setTimeout(() => {
+            this.flag = true
+          }, 500)
         } catch (error) {
           console.log(error.message)
         }
@@ -112,6 +128,25 @@
       // 获取购物车列表
       getData() {
         this.$store.dispatch('getShopCart')
+      },
+      // 删除商品
+      async deleteSku(skuId) {
+        try {
+          await this.$store.dispatch('deleteShopCart', skuId)
+          this.getData()
+        } catch (error) {
+          alert(error.message)
+        }
+      },
+      // 更改选中状态
+      async updateChecked(skuId, event) {
+        let isChecked = event.target.checked ? 1 : 0
+        try {
+          await this.$store.dispatch('updateShopCart', { skuId, isChecked })
+          this.getData()
+        } catch (error) {
+          alert(error.message)
+        }
       }
     }
   }
