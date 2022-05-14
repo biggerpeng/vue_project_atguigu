@@ -18,9 +18,13 @@ requests.interceptors.request.use(config => {
     //设置用户临时id请求头
     config.headers.userTempId = store.state.detail.uuid_token
   }
+  // 设置token请求头
+  if (localStorage.getItem('token')) {
+    config.headers.token = localStorage.getItem('token')
+  }
   return config
 })
-// 相应拦截器
+// 响应拦截器
 requests.interceptors.response.use(
   response => {
     nprogress.done()

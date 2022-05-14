@@ -6,10 +6,14 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="!userName">
             <span>请</span>
             <router-link to="/login">登录</router-link>
             <router-link to="/register" class="register">免费注册</router-link>
+          </p>
+          <p v-else>
+            <a>{{ userName }}</a>
+            <a class="register">退出</a>
           </p>
         </div>
         <div class="typeList">
@@ -34,16 +38,8 @@
       <div class="searchArea">
         <form action="#" class="searchForm" @submit.prevent>
           <!-- 阻止表单默认提交行为，解决回车搜索 -->
-          <input
-            type="text"
-            id="autocomplete"
-            class="input-error input-xxlarge"
-            v-model="keyword"
-            @keyup.enter="goSearch"
-          />
-          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">
-            搜索
-          </button>
+          <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyword" @keyup.enter="goSearch" />
+          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">搜索</button>
         </form>
       </div>
     </div>
@@ -56,6 +52,11 @@
     data() {
       return {
         keyword: ''
+      }
+    },
+    computed: {
+      userName() {
+        return this.$store.state.user.userInfo.name
       }
     },
     methods: {

@@ -35,6 +35,8 @@
     },
     mounted() {
       this.$store.dispatch('getFloor')
+      // 获取用户信息
+      this.$store.dispatch('getUserInfo')
     }
   }
 </script>
