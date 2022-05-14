@@ -19,21 +19,21 @@
       </div>
       <div class="content">
         <label>登录密码:</label>
-        <input type="text" placeholder="请输入你的登录密码" />
+        <input type="password" placeholder="请输入你的登录密码" v-model="password" />
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="content">
         <label>确认密码:</label>
-        <input type="text" placeholder="请输入确认密码" />
+        <input type="password" placeholder="请输入确认密码" v-model="password1" />
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox" />
+        <input name="m1" type="checkbox" v-model="agree" />
         <span>同意协议并注册《尚品汇用户协议》</span>
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="btn">
-        <button>完成注册</button>
+        <button @click="userRegister">完成注册</button>
       </div>
     </div>
 
@@ -61,12 +61,35 @@
     data() {
       return {
         phone: '',
-        code: ''
+        code: '',
+        password: '',
+        password1: '',
+        agree: true
       }
     },
     methods: {
-      getRegisterCode(phone) {
-        this.$store.dispatch('getRegisterCode', phone)
+      // 获取验证码
+      async getRegisterCode() {
+        try {
+          this.phone && (await this.$store.dispatch('getRegisterCode', this.phone))
+          this.code = this.$store.state.user.code
+        } catch (error) {
+          alert(error.message)
+        }
+      },
+      // 注册
+      async userRegister() {
+        try {
+          const { phone, code, password, password1, agree } = this
+          phone &&
+            code &&
+            password === password1 &&
+            agree &&
+            (await this.$store.dispatch('userRegister', { phone, code, password })) &&
+            this.$router.push('/login')
+        } catch (error) {
+          alert(error.message)
+        }
       }
     }
   }

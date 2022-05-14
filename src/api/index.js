@@ -64,3 +64,11 @@ export const reqGetRegisterCode = phone =>
     url: `/user/passport/sendCode/${phone}`,
     method: 'get'
   })
+
+// 注册用户
+export const reqUserRegister = data =>
+  requests({
+    url: `/user/passport/register`,
+    method: 'post',
+    data
+  })
