@@ -87,6 +87,7 @@ router.beforeEach(async (to, from, next) => {
           await store.dispatch('getUserInfo')
           next()
         } catch (error) {
+          store.dispatch('logOut')
           next('/login')
         }
       } else {
