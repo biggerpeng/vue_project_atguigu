@@ -1,24 +1,9 @@
-# app
+### 视频教程记录
 
-## Project setup
-```
-npm install
-```
+p23
+p31
+p34 没有敲代码练习
+已看待敲
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+p62 跳过
+p71、p92 跳过重复
