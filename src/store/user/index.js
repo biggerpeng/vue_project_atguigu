@@ -1,6 +1,6 @@
 // 登录如注册模块
 
-import { reqGetRegisterCode, reqUserRegister, reqLogin, reqGetUserInfo } from '@/api'
+import { reqGetRegisterCode, reqUserRegister, reqLogin, reqGetUserInfo, reqLogOut } from '@/api'
 
 const state = {
   code: '',
@@ -47,6 +47,16 @@ const actions = {
     } else {
       return Promise.reject(new Error('fail'))
     }
+  },
+  // 退出登录
+  async logOut({ commit }) {
+    const result = await reqLogOut()
+    if (result.code === 200) {
+      commit('LOGOUT')
+      return 'ok'
+    } else {
+      return Promise.reject(new Error('fail'))
+    }
   }
 }
 const mutations = {
@@ -61,6 +71,11 @@ const mutations = {
   // 获取用户信息
   GETUSERINFO(state, userInfo) {
     state.userInfo = userInfo
+  },
+  // 退出登录
+  LOGOUT(state) {
+    state.token = {}
+    state.userInfo = {}
   }
 }
 

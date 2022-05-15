@@ -13,7 +13,7 @@
           </p>
           <p v-else>
             <a>{{ userName }}</a>
-            <a class="register">退出</a>
+            <a class="register" @click="logOut">退出</a>
           </p>
         </div>
         <div class="typeList">
@@ -70,6 +70,16 @@
             keyword: this.keyword || undefine
           }
         })
+      },
+      // 退出登录
+      async logOut() {
+        try {
+          await this.$store.dispatch('logOut')
+          localStorage.removeItem('token')
+          this.$router.push('/home')
+        } catch (error) {
+          alert(error.message)
+        }
       }
     },
     mounted() {
