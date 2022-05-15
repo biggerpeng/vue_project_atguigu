@@ -4,7 +4,7 @@ import { reqGetRegisterCode, reqUserRegister, reqLogin, reqGetUserInfo, reqLogOu
 
 const state = {
   code: '',
-  token: {},
+  token: localStorage.getItem('token'),
   userInfo: {}
 }
 const getters = {}
@@ -74,7 +74,7 @@ const mutations = {
   },
   // 退出登录
   LOGOUT(state) {
-    state.token = {}
+    state.token = ''
     state.userInfo = {}
   }
 }
