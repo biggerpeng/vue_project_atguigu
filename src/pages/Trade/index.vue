@@ -28,38 +28,24 @@
       </div>
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix">
+        <ul class="list clearFix" v-for="item in tradeListInfo.detailArrayList" :key="item.skuId">
           <li>
-            <img src="./images/goods.png" alt="" />
+            <img :src="item.imgUrl" style="width: 150px; height: 150px" />
           </li>
           <li>
-            <p>Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
+            <p>{{ item.skuName }}</p>
             <h4>7天无理由退货</h4>
           </li>
           <li>
-            <h3>￥5399.00</h3>
+            <h3>￥{{ item.orderPrice }}</h3>
           </li>
-          <li>X1</li>
-          <li>有货</li>
-        </ul>
-        <ul class="list clearFix">
-          <li>
-            <img src="./images/goods.png" alt="" />
-          </li>
-          <li>
-            <p>Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
-            <h4>7天无理由退货</h4>
-          </li>
-          <li>
-            <h3>￥5399.00</h3>
-          </li>
-          <li>X1</li>
+          <li>{{ item.skuNum }}</li>
           <li>有货</li>
         </ul>
       </div>
       <div class="bbs">
         <h5>买家留言：</h5>
-        <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont"></textarea>
+        <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont" v-model="msg"></textarea>
       </div>
       <div class="line"></div>
       <div class="bill">
@@ -71,8 +57,11 @@
     <div class="money clearFix">
       <ul>
         <li>
-          <b><i>1</i>件商品，总商品金额</b>
-          <span>¥5399.00</span>
+          <b
+            ><i>{{ tradeListInfo.totalNum }}</i
+            >件商品，总商品金额</b
+          >
+          <span>¥{{ tradeListInfo.totalAmount }}</span>
         </li>
         <li>
           <b>返现：</b>
@@ -103,13 +92,19 @@
   import { mapState } from 'vuex'
   export default {
     name: 'Trade',
+    data() {
+      return {
+        msg: ''
+      }
+    },
     computed: {
       ...mapState({
-        userAddress: state => state.trade.userAddress //注意模块化mapState的写法
+        userAddress: state => state.trade.userAddress, //注意模块化mapState的写法
+        tradeListInfo: state => state.trade.tradeListInfo
       }),
       // 选出被选中的地址
       userDefaultAddress() {
-        return this.userAddress.find(item => item.isDefault === '1')
+        return this.userAddress.find(item => item.isDefault === '1') || {}
       }
     },
     methods: {
