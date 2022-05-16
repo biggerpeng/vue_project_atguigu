@@ -26,6 +26,13 @@ import 'swiper/css/swiper.css'
 // 引入api
 import * as API from '@/api'
 
+// 按需引入elementUI
+import { Button, MessageBox } from 'element-ui'
+
+Vue.component(Button.name, Button)
+Vue.prototype.$msgbox = MessageBox
+Vue.prototype.$alert = MessageBox.alert
+
 Vue.config.productionTip = false
 
 new Vue({

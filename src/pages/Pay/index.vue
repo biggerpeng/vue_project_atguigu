@@ -66,7 +66,7 @@
         <div class="hr"></div>
 
         <div class="submit">
-          <a class="btn">立即支付</a>
+          <a class="btn" @click="open">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -79,15 +79,20 @@
         </div>
       </div>
     </div>
+    <el-button type="primary" icon="el-icon-star-on">测试</el-button>
   </div>
 </template>
 
 <script>
+  import QRCode from 'qrcode'
+
   export default {
     name: 'Pay',
     data() {
       return {
-        payInfo: {}
+        payInfo: {},
+        timer: null,
+        payCode: ''
       }
     },
     computed: {
@@ -103,6 +108,45 @@
         } else {
           return Promise.reject(new Error('获取支付信息失败'))
         }
+      },
+      async open() {
+        const url = await QRCode.toDataURL(this.payInfo.codeUrl)
+        this.$alert(`<img src="${url}" />`, '请支付', {
+          dangerouslyUseHTMLString: true,
+          center: true,
+          showCancelButton: true,
+          showClose: false,
+          cancelButtonText: '支付有问题',
+          confirmButtonText: '已完成支付',
+          // 关闭前配置
+          beforeClose: (type, instance, done) => {
+            if (type === 'cancel') {
+              clearInterval(this.timer)
+              this.timer = null
+              done()
+            } else {
+              if (this.payCode === 200) {
+                clearInterval(this.timer)
+                this.timer = null
+                done()
+                this.$router.push('/paysuccess')
+              } else {
+                alert('您未支付')
+              }
+            }
+          }
+        })
+
+        this.timer = setInterval(async () => {
+          const result = await this.$API.reqPayStatus(this.orderId)
+          if (result.code === 200) {
+            clearInterval(this.timer)
+            this.timer = null
+            this.$msgbox.close()
+            this.payCode = 200
+            this.$router.push('/paysuccess')
+          }
+        }, 1000)
       }
     },
     mounted() {
