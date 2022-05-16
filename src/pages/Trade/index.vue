@@ -83,7 +83,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
@@ -112,6 +112,24 @@
       changeDefault(current, userAddress) {
         userAddress.forEach(item => (item.isDefault = '0'))
         current.isDefault = '1'
+      },
+      // 提交订单
+      async submitOrder() {
+        let data = {
+          consignee: this.userDefaultAddress.consignee,
+          consigneeTel: this.userDefaultAddress.phoneNum,
+          deliveryAddress: this.userDefaultAddress.fullAddress,
+          paymentWay: 'ONLINE',
+          orderComment: this.msg,
+          orderDetailList: this.tradeListInfo.detailArrayList
+        }
+        const result = await this.$API.reqSubmitOrder(this.tradeListInfo.tradeNo, data)
+        if (result.code === 200) {
+          this.$router.push('/pay/?orderId=' + result.data)
+          return 'ok'
+        } else {
+          return Promise.reject(new Error('fail'))
+        }
       }
     },
     mounted() {

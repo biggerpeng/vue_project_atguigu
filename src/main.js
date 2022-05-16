@@ -23,6 +23,9 @@ import store from '@/store'
 // 引入swiper样式
 import 'swiper/css/swiper.css'
 
+// 引入api
+import * as API from '@/api'
+
 Vue.config.productionTip = false
 
 new Vue({
@@ -30,6 +33,7 @@ new Vue({
   store,
   beforeCreate() {
     Vue.prototype.$bus = this
+    Vue.prototype.$API = API
   },
   render: h => h(App)
 }).$mount('#app')
