@@ -1,5 +1,6 @@
 import Home from '@/pages/Home'
-import Search from '@/pages/Search'
+// import Search from '@/pages/Search'
+// const Search = () => import('@/pages/Search')  //路由懒加载
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
@@ -23,7 +24,7 @@ export default [
   {
     name: 'search',
     path: '/search/:keyword?',
-    component: Search,
+    component: () => import('@/pages/Search'), //路由懒加载
     meta: {
       show: true
     }
@@ -78,6 +79,13 @@ export default [
     component: Trade,
     meta: {
       show: true
+    },
+    beforeEnter(to, from, next) {
+      if (from.path === '/shopcart') {
+        next()
+      } else {
+        next(false)
+      }
     }
   },
   {
@@ -85,6 +93,13 @@ export default [
     component: Pay,
     meta: {
       show: true
+    },
+    beforeEnter(to, from, next) {
+      if (from.path === '/trade') {
+        next()
+      } else {
+        next(false)
+      }
     }
   },
   {

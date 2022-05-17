@@ -92,7 +92,7 @@
       return {
         payInfo: {},
         timer: null,
-        payCode: ''
+        payCode: 200
       }
     },
     computed: {

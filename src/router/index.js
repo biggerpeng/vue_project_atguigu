@@ -96,7 +96,11 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     // 未登录
-    next()
+    if (to.path.indexOf('/center') !== -1 || to.path.indexOf('/pay') !== -1 || to.path.indexOf('/trade') !== -1) {
+      next('/login?redirect=' + to.path) //通过query参数保存未登录时想跳转的路径，登陆成功后再跳转到该路径，而通过变量保存路径则会被覆盖
+    } else {
+      next()
+    }
   }
   // 关键点是判断是否登录要判断token，不要判断通过token获取的用户信息，因为刷新页面仓库中的数据需要重新获取，会带来许多问题
   // 需判断情况：1、用户登录了不能跳登录页，2、没登陆则可以跳，3、每次路由跳转都要获取用户信息，若获取失败，则token失效

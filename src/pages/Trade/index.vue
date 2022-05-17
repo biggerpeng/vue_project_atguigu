@@ -125,7 +125,7 @@
         }
         const result = await this.$API.reqSubmitOrder(this.tradeListInfo.tradeNo, data)
         if (result.code === 200) {
-          this.$router.push('/pay/?orderId=' + result.data)
+          this.$router.push('/pay?orderId=' + result.data)
           return 'ok'
         } else {
           return Promise.reject(new Error('fail'))

@@ -80,7 +80,8 @@
           const { phone, password } = this
           phone && password && (await this.$store.dispatch('userLogin', { phone, password }))
           localStorage.setItem('token', this.$store.state.user.token)
-          this.$router.push('/home')
+          const path = this.$route.query.redirect || '/home'
+          this.$router.push(path)
         } catch (error) {
           alert(error.message)
         }
