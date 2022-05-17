@@ -30,7 +30,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="good in order.orderDetailList" :key="good.id">
+            <tr v-for="(good, index) in order.orderDetailList" :key="good.id">
               <td width="60%">
                 <div class="typographic">
                   <img :src="good.imgUrl" style="width: 100px; height: 100px" />
@@ -39,17 +39,17 @@
                   <a href="#" class="service">售后申请</a>
                 </div>
               </td>
-              <td rowspan="2" width="8%" class="center">{{ order.consignee }}</td>
-              <td rowspan="2" width="13%" class="center">
+              <td :rowspan="order.orderDetailList.length" v-if="index === 0" width="8%" class="center">{{ order.consignee }}</td>
+              <td :rowspan="order.orderDetailList.length" v-if="index === 0" width="13%" class="center">
                 <ul class="unstyled">
                   <li>总金额¥{{ order.totalAmount }}</li>
                   <li>在线支付</li>
                 </ul>
               </td>
-              <td rowspan="2" width="8%" class="center">
+              <td :rowspan="order.orderDetailList.length" v-if="index === 0" width="8%" class="center">
                 <a href="#" class="btn">{{ order.orderStatusName }} </a>
               </td>
-              <td rowspan="2" width="13%" class="center">
+              <td :rowspan="order.orderDetailList.length" v-if="index === 0" width="13%" class="center">
                 <ul class="unstyled">
                   <li>
                     <a href="mycomment.html" target="_blank">评价|晒单</a>
@@ -61,32 +61,8 @@
         </table>
       </div>
       <div class="choose-order">
-        <div class="pagination">
-          <ul>
-            <li class="prev disabled">
-              <a href="javascript:">«上一页</a>
-            </li>
-            <li class="page actived">
-              <a href="javascript:">1</a>
-            </li>
-            <li class="page">
-              <a href="javascript:">2</a>
-            </li>
-            <li class="page">
-              <a href="javascript:">3</a>
-            </li>
-            <li class="page">
-              <a href="javascript:">4</a>
-            </li>
-
-            <li class="next disabled">
-              <a href="javascript:">下一页»</a>
-            </li>
-          </ul>
-          <div>
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;共2页&nbsp;</span>
-          </div>
-        </div>
+        <!-- 分页器 -->
+        <Pagination :pageNo="page" :pageSize="limit" :total="orderInfo.total" :continues="5" @changePage="changePage"></Pagination>
       </div>
     </div>
     <!--猜你喜欢-->
@@ -149,7 +125,7 @@
     name: 'MyOrder',
     data() {
       return {
-        page: '1',
+        page: 1,
         limit: '20',
         orderInfo: {}
       }
@@ -163,6 +139,10 @@
         } else {
           return Promise.reject(new Error('fail'))
         }
+      },
+      changePage(page) {
+        this.page = page
+        this.getData()
       }
     },
     mounted() {
