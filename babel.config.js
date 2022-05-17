@@ -7,6 +7,7 @@ module.exports = {
         libraryName: 'element-ui',
         styleLibraryName: 'theme-chalk'
       }
-    ]
+    ],
+    '@babel/plugin-transform-runtime' //es7语法转换适配
   ]
 }
